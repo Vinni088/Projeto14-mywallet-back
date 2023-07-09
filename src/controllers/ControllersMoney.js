@@ -1,5 +1,7 @@
 import { db } from "../database/database.connection.js"
 import { ObjectId } from "mongodb"
+
+
 /*
 export async function createRecipe(req, res) {
     try {
@@ -13,7 +15,6 @@ export async function createRecipe(req, res) {
     }
 
 }
-
 export async function getRecipe(req, res) {
     try {
         const receitas = await db.collection("receitas").find().toArray()
@@ -22,7 +23,6 @@ export async function getRecipe(req, res) {
         res.status(500).send(err.message)
     }
 }
-
 export async function getRecipeById(req, res) {
     const { id } = req.params
     
@@ -34,7 +34,6 @@ export async function getRecipeById(req, res) {
         res.status(500).send(err.message)
     }
 }
-
 export async function deleteRecipe(req, res) {
     const { id } = req.params
 
@@ -47,7 +46,6 @@ export async function deleteRecipe(req, res) {
         res.status(500).send(err.message)
     }
 }
-
 export async function deleteRecipesByIngredients(req, res) {
     const { filtroIngredientes } = req.params
 
@@ -58,7 +56,6 @@ export async function deleteRecipesByIngredients(req, res) {
         res.status(500).send(err.message)
     }
 }
-
 export async function editRecipe(req, res) {
     const { id } = req.params
     const { titulo, preparo, ingredientes } = req.body
@@ -74,7 +71,6 @@ export async function editRecipe(req, res) {
         res.status(500).send(err.message)
     }
 }
-
 export async function editRecipesByIngridients(req, res) {
     const { filtroIngredientes } = req.params
     const { titulo, ingredientes, preparo } = req.body
@@ -90,3 +86,33 @@ export async function editRecipesByIngridients(req, res) {
     }
 }
 */
+
+export async function AdicionarTransação(req, res) {
+    const { valor, descricao }  = req.body;
+    const { tipo } = req.params;
+    const { nome } = res.locals.sessao;
+
+    let objeto = {
+        nome,
+        tipo,
+        valor,
+        descricao,
+    }
+
+    try {
+        await db.collection("transações").insertOne(objeto);
+        res.status(200).send(objeto);
+    } catch(err) {
+        res.status(500).send(err.message)
+    }
+}
+
+export async function Transações(req, res) {
+    const { nome } = res.locals.sessao;
+    try {
+        let transações = await db.collection("transações").find({nome}).toArray();
+        res.status(200).send(transações);
+    } catch(err) {
+        res.status(500).send(err.message)
+    }
+}
