@@ -43,7 +43,6 @@ export async function usuarioON (req, res) {
 
     try {
         const usuario = await db.collection("usuarios").findOne({ _id: sessao.idUsuario })
-
         delete usuario.senha
         res.send(usuario)
     } catch (err) {
@@ -58,4 +57,16 @@ export async function CleanDataUsers(req, res){
     } catch {
       res.status(500).send(err.message);
     }
-  };
+};
+
+export async function usuarioOF(req, res ) {
+    const { sessao } = res.locals;
+    const {nome} = sessao;
+    try {
+        await db.collection("sessao").deleteMany({ nome })
+        res.sendStatus(200)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
