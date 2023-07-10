@@ -1,4 +1,5 @@
 import { db } from "../database/database.connection.js"
+import dayjs from "dayjs";
 import { ObjectId } from "mongodb"
 
 
@@ -90,10 +91,11 @@ export async function editRecipesByIngridients(req, res) {
 export async function AdicionarTransação(req, res) {
     const { valor, descricao }  = req.body;
     const { tipo } = req.params;
-    const { nome } = res.locals.sessao;
+    const { email } = res.locals.sessao;
 
     let objeto = {
-        nome,
+        email,
+        data: dayjs().format('DD/MM'),
         tipo,
         valor,
         descricao,
