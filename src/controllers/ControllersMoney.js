@@ -89,13 +89,12 @@ export async function editRecipesByIngridients(req, res) {
 */
 
 export async function AdicionarTransação(req, res) {
-    const { valor, descricao }  = req.body;
+    const { email, valor, descricao }  = req.body;
     const { tipo } = req.params;
-    const { email } = res.locals.sessao;
 
     let objeto = {
-        email,
         data: dayjs().format('DD/MM'),
+        email,
         tipo,
         valor,
         descricao,
@@ -110,9 +109,10 @@ export async function AdicionarTransação(req, res) {
 }
 
 export async function Transações(req, res) {
-    const { nome } = res.locals.sessao;
+    const {email} = req.body;
+
     try {
-        let transações = await db.collection("transações").find({nome}).toArray();
+        let transações = await db.collection("transações").find({ email }).toArray();
         res.status(200).send(transações);
     } catch(err) {
         res.status(500).send(err.message)
