@@ -109,7 +109,7 @@ export async function AdicionarTransação(req, res) {
 }
 
 export async function Transações(req, res) {
-    const {email} = req.body;
+    const { email } = req.query;
 
     try {
         let transações = await db.collection("transações").find({ email }).toArray();
